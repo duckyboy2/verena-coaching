@@ -18,17 +18,22 @@ export function TestimonialSection() {
             {t.testimonial.subtitle}
           </h3>
 
-          <div className="relative">
-            <div className="w-24 h-1 bg-amber-700 mx-auto mb-12" />
-
-            <blockquote className="text-lg sm:text-xl text-neutral-700 leading-relaxed mb-6 italic">
-              {t.testimonial.quote}
-            </blockquote>
-
-            <cite className="text-sm text-amber-700 not-italic font-medium">
-              {t.testimonial.author}
-            </cite>
-          </div>
+          {t.testimonial.items.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {t.testimonial.items.map((item, idx) => (
+                 <div key={idx} className="bg-white p-8 shadow-sm">
+                   {/* Placeholder for future specific schema */}
+                 </div>
+              ))}
+            </div>
+          )}
+          
+          {/* Default/Placeholder if provided */}
+          {t.testimonial.items.length === 0 && (
+             <div className="text-neutral-400 italic">
+               (Testimonials coming soon)
+             </div>
+          )}
         </div>
       </div>
     </section>

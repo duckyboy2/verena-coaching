@@ -14,7 +14,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
             <div className="mb-4">
-              <div className="text-xs font-light tracking-wide text-neutral-400">Verena Newsome</div>
+              <div className="text-xs font-light tracking-wide text-neutral-400">Verena Wassermann</div>
               <div className="text-sm font-semibold tracking-wider text-white">MIND & BODY COACHING</div>
             </div>
             <p className="text-sm text-neutral-400 leading-relaxed">
@@ -25,9 +25,9 @@ export function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4">Contact</h3>
             <div className="space-y-2">
-              <a href="mailto:contact@verena-newsome.com" className="flex items-center text-sm hover:text-white transition-colors">
+              <a href="mailto:contact@verena-wassermann.com" className="flex items-center text-sm hover:text-white transition-colors">
                 <Mail className="w-4 h-4 mr-2" />
-                contact@verena-newsome.com
+                contact@verena-wassermann.com
               </a>
             </div>
           </div>

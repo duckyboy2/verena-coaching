@@ -17,41 +17,31 @@ export function AboutSection() {
             <div
               className="aspect-[3/4] rounded-lg bg-cover bg-center shadow-2xl"
               style={{
-                backgroundImage: 'url(https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=800)',
+                backgroundImage: 'url(/images/hero/image1.jpeg)',
               }}
             />
           </div>
 
           <div className="order-1 lg:order-2 space-y-6">
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-neutral-900">
-              {t.about.greeting}
+              {t.intro.greeting}
             </h2>
 
             <div className="space-y-1">
               <div className="w-16 h-1 bg-amber-700" />
               <p className="text-xl text-neutral-700 font-medium">
-                {t.about.title}
-              </p>
-              <p className="text-xl text-neutral-700 font-medium">
-                {t.about.subtitle}
+                {t.intro.title}
               </p>
             </div>
 
             <div className="space-y-4 text-neutral-600 leading-relaxed">
-              <p>{t.about.intro}</p>
-              <p>{t.about.description}</p>
-              <p className="font-medium">{t.about.mission}</p>
+              {t.intro.description.map((paragraph, idx) => (
+                <p key={idx}>{paragraph}</p>
+              ))}
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button className="bg-amber-700 hover:bg-amber-800 text-white px-6 py-6 rounded-none">
-                {t.about.ctaPrimary}
-                <ChevronRight className="ml-2 w-5 h-5" />
-              </Button>
-              <Button variant="outline" className="border-neutral-800 text-neutral-800 hover:bg-neutral-800 hover:text-white px-6 py-6 rounded-none">
-                {t.about.ctaSecondary}
-                <ChevronRight className="ml-2 w-5 h-5" />
-              </Button>
+            {/* Buttons removed as per new design spec for Intro section */}
             </div>
           </div>
         </div>

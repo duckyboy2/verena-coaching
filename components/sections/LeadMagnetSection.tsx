@@ -23,7 +23,7 @@ export function LeadMagnetSection() {
             </div>
 
             <div className="flex items-center gap-4">
-              <Button className="bg-neutral-900 hover:bg-neutral-800 text-white px-6 py-6 rounded-none">
+              <Button variant="amber" size="lg">
                 <Mail className="mr-2 w-5 h-5" />
                 {t.leadMagnet.cta}
               </Button>

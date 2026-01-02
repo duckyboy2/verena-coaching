@@ -1,5 +1,12 @@
 export const content = {
   en: {
+    firstScreen: {
+      title: "Where Medicine",
+      titleHighlight: "Meets Soul",
+      subtitle: "Reconnect with your inner wisdom through nervous system regulation and somatic healing",
+      scrollText: "Begin Your Journey",
+      tagline: "Mind • Body • Spirit"
+    },
     nav: {
       myWork: "My Work",
       aboutMe: "About Me",
@@ -166,6 +173,13 @@ export const content = {
     }
   },
   de: {
+    firstScreen: {
+      title: "Wo Medizin",
+      titleHighlight: "auf Seele trifft",
+      subtitle: "Finde zurück zu deiner inneren Weisheit durch Nervensystemregulation und somatische Heilung",
+      scrollText: "Beginne deine Reise",
+      tagline: "Geist • Körper • Seele"
+    },
     nav: {
       myWork: "Meine Arbeit",
       aboutMe: "Über mich",

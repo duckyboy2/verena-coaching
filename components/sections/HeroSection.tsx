@@ -30,12 +30,13 @@ export function HeroSection() {
 
           <div className="flex flex-col items-start">
             <Button
-              className="bg-amber-700 hover:bg-amber-800 text-white px-8 py-6 text-lg rounded-none shadow-lg mb-8"
+              variant="gradient"
+              size="lg"
             >
               {t.hero.cta}
               <ChevronRight className="ml-2 w-5 h-5" />
             </Button>
-            
+
             <p className="text-xs text-neutral-400 max-w-md font-light tracking-wide opacity-80">
               {t.hero.legal}
             </p>

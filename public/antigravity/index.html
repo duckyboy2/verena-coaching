@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antigravity - Liquid Dreams</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            background: #0a0a0f;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 1s ease-out, visibility 1s ease-out;
+        }
+
+        #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-title {
+            font-size: clamp(2rem, 8vw, 5rem);
+            font-weight: 100;
+            letter-spacing: 1.5em;
+            color: transparent;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #667eea);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
+            margin-bottom: 3rem;
+            text-indent: 1.5em;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+            transition: width 0.3s ease-out;
+        }
+
+        .loading-text {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+
+        /* Floating orbs in loading screen */
+        .loading-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.3;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .loading-orb:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            background: #667eea;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .loading-orb:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            background: #764ba2;
+            bottom: 10%;
+            right: 10%;
+            animation-delay: -2s;
+        }
+
+        .loading-orb:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            background: #f093fb;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
+        }
+
+        /* Canvas Container */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Content Overlay */
+        #content-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 3rem;
+            opacity: 0;
+            transition: opacity 1.5s ease-out 0.5s;
+        }
+
+        #content-overlay.visible {
+            opacity: 1;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1rem;
+            font-weight: 300;
+            letter-spacing: 0.5em;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            transition: color 0.3s ease;
+            pointer-events: auto;
+        }
+
+        .nav-links a:hover {
+            color: rgba(255, 255, 255, 1);
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex: 1;
+        }
+
+        .main-title {
+            font-size: clamp(3rem, 12vw, 10rem);
+            font-weight: 100;
+            letter-spacing: 0.3em;
+            color: transparent;
+            background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.4) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            text-indent: 0.3em;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: clamp(0.8rem, 2vw, 1.2rem);
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .scroll-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 0.4; transform: scaleY(1); }
+            50% { opacity: 1; transform: scaleY(1.2); }
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .social-links a {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            pointer-events: auto;
+        }
+
+        .social-links a:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Background gradient overlay */
+        .gradient-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(ellipse at center, transparent 0%, #0a0a0f 70%);
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            #content-overlay {
+                padding: 1.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .social-links {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-orb"></div>
+        <div class="loading-orb"></div>
+        <div class="loading-orb"></div>
+        <h1 class="loading-title">ANTIGRAVITY</h1>
+        <div class="loading-container">
+            <div class="loading-bar">
+                <div class="loading-progress" id="loading-progress"></div>
+            </div>
+            <p class="loading-text">Initializing Experience</p>
+        </div>
+    </div>
+
+    <!-- Three.js Canvas Container -->
+    <div id="canvas-container"></div>
+    
+    <!-- Background Gradient -->
+    <div class="gradient-overlay"></div>
+
+    <!-- Content Overlay -->
+    <div id="content-overlay">
+        <header class="header">
+            <div class="logo">Antigravity</div>
+            <nav class="nav-links">
+                <a href="#">Explore</a>
+                <a href="#">About</a>
+                <a href="#">Contact</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <h1 class="main-title">ANTIGRAVITY</h1>
+            <p class="subtitle">Defy the ordinary</p>
+        </main>
+
+        <footer class="footer">
+            <div class="scroll-indicator">
+                <span>SCROLL</span>
+                <div class="scroll-line"></div>
+            </div>
+            <div class="social-links">
+                <a href="#">Twitter</a>
+                <a href="#">Instagram</a>
+                <a href="#">GitHub</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Three.js via ES Module -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+        }
+    }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+
+        // ============================================
+        // GLSL Shader Code
+        // ============================================
+
+        // 3D Perlin Noise (simplified periodic noise)
+        const noiseGLSL = `
+            //
+            // GLSL textureless classic 3D noise "cnoise"
+            // Author:  Stefan Gustavson (stefan.gustavson@liu.se)
+            //
+            vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+            vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+            vec3 fade(vec3 t) { return t*t*t*(t*(t*6.0-15.0)+10.0); }
+
+            float cnoise(vec3 P) {
+                vec3 Pi0 = floor(P);
+                vec3 Pi1 = Pi0 + vec3(1.0);
+                Pi0 = mod289(Pi0);
+                Pi1 = mod289(Pi1);
+                vec3 Pf0 = fract(P);
+                vec3 Pf1 = Pf0 - vec3(1.0);
+                vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
+                vec4 iy = vec4(Pi0.yy, Pi1.yy);
+                vec4 iz0 = Pi0.zzzz;
+                vec4 iz1 = Pi1.zzzz;
+
+                vec4 ixy = permute(permute(ix) + iy);
+                vec4 ixy0 = permute(ixy + iz0);
+                vec4 ixy1 = permute(ixy + iz1);
+
+                vec4 gx0 = ixy0 * (1.0 / 7.0);
+                vec4 gy0 = fract(floor(gx0) * (1.0 / 7.0)) - 0.5;
+                gx0 = fract(gx0);
+                vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);
+                vec4 sz0 = step(gz0, vec4(0.0));
+                gx0 -= sz0 * (step(0.0, gx0) - 0.5);
+                gy0 -= sz0 * (step(0.0, gy0) - 0.5);
+
+                vec4 gx1 = ixy1 * (1.0 / 7.0);
+                vec4 gy1 = fract(floor(gx1) * (1.0 / 7.0)) - 0.5;
+                gx1 = fract(gx1);
+                vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);
+                vec4 sz1 = step(gz1, vec4(0.0));
+                gx1 -= sz1 * (step(0.0, gx1) - 0.5);
+                gy1 -= sz1 * (step(0.0, gy1) - 0.5);
+
+                vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);
+                vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);
+                vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);
+                vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);
+                vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);
+                vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);
+                vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
+                vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
+
+                vec4 norm0 = taylorInvSqrt(vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110)));
+                g000 *= norm0.x;
+                g010 *= norm0.y;
+                g100 *= norm0.z;
+                g110 *= norm0.w;
+                vec4 norm1 = taylorInvSqrt(vec4(dot(g001, g001), dot(g011, g011), dot(g101, g101), dot(g111, g111)));
+                g001 *= norm1.x;
+                g011 *= norm1.y;
+                g101 *= norm1.z;
+                g111 *= norm1.w;
+
+                float n000 = dot(g000, Pf0);
+                float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));
+                float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));
+                float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
+                float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
+                float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
+                float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
+                float n111 = dot(g111, Pf1);
+
+                vec3 fade_xyz = fade(Pf0);
+                vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
+                vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
+                float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x);
+                return 2.2 * n_xyz;
+            }
+
+            // Periodic 3D noise
+            float pnoise(vec3 P, vec3 rep) {
+                vec3 Pi0 = mod(floor(P), rep);
+                vec3 Pi1 = mod(Pi0 + vec3(1.0), rep);
+                Pi0 = mod289(Pi0);
+                Pi1 = mod289(Pi1);
+                vec3 Pf0 = fract(P);
+                vec3 Pf1 = Pf0 - vec3(1.0);
+                vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
+                vec4 iy = vec4(Pi0.yy, Pi1.yy);
+                vec4 iz0 = Pi0.zzzz;
+                vec4 iz1 = Pi1.zzzz;
+
+                vec4 ixy = permute(permute(ix) + iy);
+                vec4 ixy0 = permute(ixy + iz0);
+                vec4 ixy1 = permute(ixy + iz1);
+
+                vec4 gx0 = ixy0 * (1.0 / 7.0);
+                vec4 gy0 = fract(floor(gx0) * (1.0 / 7.0)) - 0.5;
+                gx0 = fract(gx0);
+                vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);
+                vec4 sz0 = step(gz0, vec4(0.0));
+                gx0 -= sz0 * (step(0.0, gx0) - 0.5);
+                gy0 -= sz0 * (step(0.0, gy0) - 0.5);
+
+                vec4 gx1 = ixy1 * (1.0 / 7.0);
+                vec4 gy1 = fract(floor(gx1) * (1.0 / 7.0)) - 0.5;
+                gx1 = fract(gx1);
+                vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);
+                vec4 sz1 = step(gz1, vec4(0.0));
+                gx1 -= sz1 * (step(0.0, gx1) - 0.5);
+                gy1 -= sz1 * (step(0.0, gy1) - 0.5);
+
+                vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);
+                vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);
+                vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);
+                vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);
+                vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);
+                vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);
+                vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
+                vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
+
+                vec4 norm0 = taylorInvSqrt(vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110)));
+                g000 *= norm0.x;
+                g010 *= norm0.y;
+                g100 *= norm0.z;
+                g110 *= norm0.w;
+                vec4 norm1 = taylorInvSqrt(vec4(dot(g001, g001), dot(g011, g011), dot(g101, g101), dot(g111, g111)));
+                g001 *= norm1.x;
+                g011 *= norm1.y;
+                g101 *= norm1.z;
+                g111 *= norm1.w;
+
+                float n000 = dot(g000, Pf0);
+                float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));
+                float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));
+                float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
+                float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
+                float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
+                float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
+                float n111 = dot(g111, Pf1);
+
+                vec3 fade_xyz = fade(Pf0);
+                vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
+                vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
+                float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x);
+                return 2.2 * n_xyz;
+            }
+        `;
+
+        // Rotation helper
+        const rotateGLSL = `
+            vec3 rotateY(vec3 v, float angle) {
+                float c = cos(angle);
+                float s = sin(angle);
+                return vec3(c * v.x + s * v.z, v.y, -s * v.x + c * v.z);
+            }
+        `;
+
+        // Vertex Shader
+        const vertexShader = `
+            ${noiseGLSL}
+            ${rotateGLSL}
+
+            varying vec2 vUv;
+            varying float vDistort;
+            varying vec3 vNormal;
+            varying vec3 vPosition;
+
+            uniform float uTime;
+            uniform float uSpeed;
+            uniform float uNoiseDensity;
+            uniform float uNoiseStrength;
+            uniform float uFrequency;
+            uniform float uAmplitude;
+
+            void main() {
+                vUv = uv;
+                
+                float t = uTime * uSpeed;
+                
+                // Create distortion using periodic noise
+                float distortion = pnoise((normal + t), vec3(10.0) * uNoiseDensity) * uNoiseStrength;
+                
+                // Disturb each vertex along the direction of its normal
+                vec3 pos = position + (normal * distortion);
+                
+                // Create a sine wave twist from top to bottom
+                float angle = sin(uv.y * uFrequency + t) * uAmplitude;
+                pos = rotateY(pos, angle);
+                
+                vDistort = distortion;
+                vNormal = normalize(normalMatrix * normal);
+                vPosition = pos;
+                
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+            }
+        `;
+
+        // Fragment Shader
+        const fragmentShader = `
+            varying vec2 vUv;
+            varying float vDistort;
+            varying vec3 vNormal;
+            varying vec3 vPosition;
+
+            uniform float uIntensity;
+            uniform float uTime;
+
+            // Cosine palette function by Inigo Quilez
+            vec3 cosPalette(float t, vec3 a, vec3 b, vec3 c, vec3 d) {
+                return a + b * cos(6.28318 * (c * t + d));
+            }
+
+            void main() {
+                float distort = vDistort * uIntensity;
+                
+                // Color palette parameters - creates beautiful purple/pink/blue gradient
+                vec3 brightness = vec3(0.5, 0.5, 0.5);
+                vec3 contrast = vec3(0.5, 0.5, 0.5);
+                vec3 oscillation = vec3(1.0, 1.0, 1.0);
+                vec3 phase = vec3(0.0, 0.1, 0.2);
+                
+                // Create color from distortion
+                vec3 color = cosPalette(distort, brightness, contrast, oscillation, phase);
+                
+                // Add some depth based on normals
+                float fresnel = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 2.0);
+                color = mix(color, vec3(1.0), fresnel * 0.3);
+                
+                // Subtle ambient glow
+                float glow = smoothstep(0.0, 1.0, vDistort + 0.5);
+                color += vec3(0.1, 0.05, 0.15) * glow;
+                
+                gl_FragColor = vec4(color, 1.0);
+            }
+        `;
+
+        // ============================================
+        // Three.js Scene Setup
+        // ============================================
+
+        class AntigravityScene {
+            constructor() {
+                this.container = document.getElementById('canvas-container');
+                this.loadingScreen = document.getElementById('loading-screen');
+                this.loadingProgress = document.getElementById('loading-progress');
+                this.contentOverlay = document.getElementById('content-overlay');
+                
+                this.progress = 0;
+                this.isLoaded = false;
+                
+                this.init();
+            }
+
+            init() {
+                // Simulate loading progress
+                this.simulateLoading();
+                
+                // Setup Three.js
+                this.setupScene();
+                this.setupCamera();
+                this.setupRenderer();
+                this.setupBlob();
+                this.setupLights();
+                this.setupEventListeners();
+                
+                // Start animation
+                this.animate();
+            }
+
+            simulateLoading() {
+                const loadInterval = setInterval(() => {
+                    this.progress += Math.random() * 15;
+                    if (this.progress >= 100) {
+                        this.progress = 100;
+                        clearInterval(loadInterval);
+                        
+                        // Hide loading screen after a brief moment
+                        setTimeout(() => {
+                            this.loadingScreen.classList.add('hidden');
+                            this.contentOverlay.classList.add('visible');
+                            this.isLoaded = true;
+                        }, 500);
+                    }
+                    this.loadingProgress.style.width = `${this.progress}%`;
+                }, 100);
+            }
+
+            setupScene() {
+                this.scene = new THREE.Scene();
+                this.scene.background = new THREE.Color(0x0a0a0f);
+            }
+
+            setupCamera() {
+                this.camera = new THREE.PerspectiveCamera(
+                    45,
+                    window.innerWidth / window.innerHeight,
+                    0.1,
+                    1000
+                );
+                this.camera.position.z = 5;
+            }
+
+            setupRenderer() {
+                this.renderer = new THREE.WebGLRenderer({
+                    antialias: true,
+                    alpha: true
+                });
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+                this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                this.container.appendChild(this.renderer.domElement);
+            }
+
+            setupBlob() {
+                // Create high-detail icosahedron geometry for smooth blob
+                const geometry = new THREE.IcosahedronGeometry(1.5, 64);
+                
+                // Shader material with uniforms
+                this.material = new THREE.ShaderMaterial({
+                    vertexShader,
+                    fragmentShader,
+                    uniforms: {
+                        uTime: { value: 0 },
+                        uSpeed: { value: 0.2 },
+                        uNoiseDensity: { value: 1.5 },
+                        uNoiseStrength: { value: 0.3 },
+                        uFrequency: { value: 3.0 },
+                        uAmplitude: { value: 0.3 },
+                        uIntensity: { value: 1.5 }
+                    },
+                    side: THREE.DoubleSide
+                });
+                
+                this.blob = new THREE.Mesh(geometry, this.material);
+                this.scene.add(this.blob);
+            }
+
+            setupLights() {
+                // Ambient light for overall illumination
+                const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+                this.scene.add(ambientLight);
+                
+                // Point lights for dynamic lighting
+                const pointLight1 = new THREE.PointLight(0x667eea, 1, 100);
+                pointLight1.position.set(5, 5, 5);
+                this.scene.add(pointLight1);
+                
+                const pointLight2 = new THREE.PointLight(0x764ba2, 1, 100);
+                pointLight2.position.set(-5, -5, 5);
+                this.scene.add(pointLight2);
+            }
+
+            setupEventListeners() {
+                window.addEventListener('resize', () => this.onResize());
+                
+                // Mouse interaction for subtle movement
+                this.mouse = { x: 0, y: 0 };
+                window.addEventListener('mousemove', (e) => {
+                    this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+                    this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+                });
+            }
+
+            onResize() {
+                this.camera.aspect = window.innerWidth / window.innerHeight;
+                this.camera.updateProjectionMatrix();
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+
+            animate() {
+                requestAnimationFrame(() => this.animate());
+                
+                // Update time uniform
+                this.material.uniforms.uTime.value += 0.01;
+                
+                // Subtle rotation based on mouse position
+                if (this.blob) {
+                    this.blob.rotation.x += (this.mouse.y * 0.1 - this.blob.rotation.x) * 0.02;
+                    this.blob.rotation.y += (this.mouse.x * 0.1 - this.blob.rotation.y) * 0.02;
+                    
+                    // Continuous slow rotation
+                    this.blob.rotation.y += 0.002;
+                }
+                
+                this.renderer.render(this.scene, this.camera);
+            }
+        }
+
+        // Initialize the scene
+        const scene = new AntigravityScene();
+    </script>
+</body>
+</html>

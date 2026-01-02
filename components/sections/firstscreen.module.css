@@ -1,0 +1,244 @@
+.firstScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 100;
+  background: linear-gradient(135deg, #1a1814 0%, #2d2820 50%, #1a1814 100%);
+  overflow: hidden;
+  transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.hidden {
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+.canvasContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.gradientOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background: radial-gradient(ellipse at center, transparent 20%, rgba(26, 24, 20, 0.7) 70%);
+  pointer-events: none;
+}
+
+.languageToggle {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.langButton {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+  transition: color 0.3s ease, background 0.3s ease;
+  border-radius: 4px;
+}
+
+.langButton:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.langActive {
+  color: rgba(201, 168, 108, 1);
+}
+
+.langActive:hover {
+  color: rgba(201, 168, 108, 1);
+}
+
+.langDivider {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.75rem;
+}
+
+.contentWrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+.tagline {
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1.5rem;
+  font-family: var(--font-inter), sans-serif;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+.mainTitle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  line-height: 1.1;
+  animation: fadeInUp 1s ease-out 0.5s both;
+}
+
+.titleLine {
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+  font-family: var(--font-playfair), serif;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.6), 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.titleHighlight {
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-weight: 600;
+  color: #ffffff;
+  font-family: var(--font-playfair), serif;
+  font-style: italic;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.6), 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes shimmer {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.subtitle {
+  max-width: 550px;
+  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.8;
+  margin: 2rem 0 3rem;
+  letter-spacing: 0.01em;
+  font-family: var(--font-inter), sans-serif;
+  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+  animation: fadeInUp 1s ease-out 0.7s both;
+}
+
+.scrollIndicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  pointer-events: auto;
+  color: rgba(255, 255, 255, 0.85);
+  transition: color 0.3s ease, transform 0.3s ease;
+  animation: fadeInUp 1s ease-out 0.9s both;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.scrollIndicator:hover {
+  color: rgba(255, 255, 255, 1);
+  transform: translateY(5px);
+}
+
+.scrollText {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.scrollArrow {
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .contentWrapper {
+    padding: 1.5rem;
+  }
+
+  .tagline {
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    margin: 1.5rem 0 2.5rem;
+  }
+
+  .mainTitle {
+    gap: 0.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .titleLine,
+  .titleHighlight {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+}

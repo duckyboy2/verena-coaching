@@ -89,6 +89,12 @@ export const content = {
       subtitle: "and your Body Remembers",
       items: [] // Placeholder if user wants specific testimonials later
     },
+    leadMagnet: {
+      prefix: "Ready to start your journey?",
+      highlight: "Get your free guide",
+      suffix: "to nervous system regulation.",
+      cta: "Subscribe"
+    },
     // New Pages Data
     myWorkPage: {
       hero: {
@@ -262,6 +268,12 @@ export const content = {
       title: "Deine Geschichte Zählt -",
       subtitle: "und dein Körper Erinnert sich",
       items: []
+    },
+    leadMagnet: {
+      prefix: "Bereit für deine Reise?",
+      highlight: "Hol dir deinen kostenlosen Guide",
+      suffix: "zur Nervensystem-Regulation.",
+      cta: "Abonnieren"
     },
     // New Pages Data
     myWorkPage: {

@@ -15,9 +15,9 @@ import { CTASection } from '@/components/sections/CTASection';
 export default function Home() {
   const [isFirstScreenHidden, setIsFirstScreenHidden] = useState(false);
 
-  const handleScrollDown = useCallback(() => {
-    setIsFirstScreenHidden(true);
-  }, []);
+  // const handleScrollDown = useCallback(() => {
+  //   setIsFirstScreenHidden(true);
+  // }, []);
 
   // Listen for scroll-up when at the top of the page to bring back first screen
   useEffect(() => {
@@ -44,10 +44,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <FirstScreenBlob
+      {/* <FirstScreenBlob
         isHidden={isFirstScreenHidden}
         onScrollDown={handleScrollDown}
-      />
+      /> */}
       <Header />
       <main className="flex-1">
         <HeroSection />

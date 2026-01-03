@@ -3,11 +3,9 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/data/content';
-// THREE.js temporarily disabled
-// import * as THREE from 'three';
+import * as THREE from 'three';
 import styles from './firstscreen.module.css';
 
-/* THREE.js blob animation - temporarily commented out
 // GLSL Shader Code
 const noiseGLSL = `
   vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -161,7 +159,6 @@ const fragmentShader = `
     gl_FragColor = vec4(color, 1.0);
   }
 `;
-*/
 
 interface FirstScreenBlobProps {
     isHidden: boolean;
@@ -174,7 +171,6 @@ export function FirstScreenBlob({ isHidden, onScrollDown }: FirstScreenBlobProps
 
     const containerRef = useRef<HTMLDivElement>(null);
     const sectionRef = useRef<HTMLElement>(null);
-    /* THREE.js refs - temporarily disabled
     const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
     const sceneRef = useRef<THREE.Scene | null>(null);
     const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
@@ -182,7 +178,6 @@ export function FirstScreenBlob({ isHidden, onScrollDown }: FirstScreenBlobProps
     const materialRef = useRef<THREE.ShaderMaterial | null>(null);
     const animationRef = useRef<number>(0);
     const mouseRef = useRef({ x: 0, y: 0 });
-    */
 
     // Handle scroll down action
     const handleScrollDown = useCallback(() => {
@@ -191,7 +186,7 @@ export function FirstScreenBlob({ isHidden, onScrollDown }: FirstScreenBlobProps
         }
     }, [isHidden, onScrollDown]);
 
-    /* THREE.js setup - temporarily disabled
+    // Three.js setup
     useEffect(() => {
         if (!containerRef.current) return;
 
@@ -305,7 +300,6 @@ export function FirstScreenBlob({ isHidden, onScrollDown }: FirstScreenBlobProps
             material.dispose();
         };
     }, []);
-    */
 
     // Handle wheel event on the section element directly
     const handleWheel = useCallback((e: React.WheelEvent) => {
@@ -366,11 +360,8 @@ export function FirstScreenBlob({ isHidden, onScrollDown }: FirstScreenBlobProps
             aria-hidden={isHidden}
             onWheel={handleWheel}
         >
-            {/* Three.js Canvas Container - temporarily disabled */}
-            {/* <div ref={containerRef} className={styles.canvasContainer} /> */}
-
-            {/* Static background placeholder while Three.js is disabled */}
-            <div className={styles.canvasContainer} style={{ background: 'linear-gradient(135deg, #1a1814 0%, #2d2a24 50%, #1a1814 100%)' }} />
+            {/* Three.js Canvas Container */}
+            <div ref={containerRef} className={styles.canvasContainer} />
 
             {/* Gradient Overlay */}
             <div className={styles.gradientOverlay} />

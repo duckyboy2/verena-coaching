@@ -15,7 +15,11 @@ export const content = {
       more: "More"
     },
     hero: {
-      slogan: "Where Medicine Meets Soul",
+      sloganParts: [
+        { text: "Where Medicine ", type: "normal" },
+        { text: "Meets ", type: "normal", newline: true },
+        { text: "Soul", type: "script" }
+      ],
       subline: "Your Story Matters — and Your Body Remembers",
       legal: "I work with coaching, mentoring & somatic practice. No diagnosis, no medical treatment.",
       cta: "Start Today"
@@ -194,7 +198,11 @@ export const content = {
       more: "Mehr"
     },
     hero: {
-      slogan: "Wo Medizin auf Seele trifft",
+      sloganParts: [
+        { text: "Wo Medizin auf ", type: "normal" },
+        { text: "Seele", type: "script" },
+        { text: " trifft", type: "normal" }
+      ],
       subline: "Deine Geschichte zählt – und dein Körper erinnert sich",
       legal: "Ich begleite im Rahmen von Coaching, Mentoring & somatischer Arbeit. Keine Diagnosen, keine Therapie, keine ärztliche Behandlung.",
       cta: "Jetzt Starten"

@@ -23,18 +23,18 @@ export function AboutSection() {
           </div>
 
           <div className="order-1 lg:order-2 space-y-6">
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-neutral-900">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-primary">
               {t.intro.greeting}
             </h2>
 
             <div className="space-y-1">
-              <div className="w-16 h-1 bg-amber-700" />
-              <p className="text-xl text-neutral-700 font-medium">
+              <div className="w-16 h-1 bg-accent" />
+              <p className="text-xl text-foreground font-medium">
                 {t.intro.title}
               </p>
             </div>
 
-            <div className="space-y-4 text-neutral-600 leading-relaxed">
+            <div className="space-y-4 text-muted-foreground leading-relaxed">
               {t.intro.description.map((paragraph, idx) => (
                 <p key={idx}>{paragraph}</p>
               ))}

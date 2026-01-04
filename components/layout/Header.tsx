@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X, Instagram, Linkedin, Globe } from 'lucide-react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -9,8 +9,18 @@ import { Button } from '@/components/ui/button';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { language, setLanguage } = useLanguage();
   const t = content[language];
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navItems = [
     { label: t.nav.myWork, href: '/my-work' },
@@ -21,7 +31,13 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/10 backdrop-blur-md border-b border-white/10">
+    <header 
+      className={`sticky top-0 z-50 w-full transition-colors duration-300 border-b ${
+        isScrolled 
+          ? 'bg-primary/95 backdrop-blur-md border-primary shadow-md' 
+          : 'bg-primary/90 backdrop-blur-md border-primary-foreground/10'
+      }`}
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center">
@@ -41,7 +57,7 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-sm font-medium text-white hover:text-amber-300 transition-colors drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
+                className="text-sm font-avenir font-medium text-primary-foreground hover:text-accent transition-colors drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
               >
                 {item.label}
               </Link>
@@ -49,22 +65,22 @@ export function Header() {
           </nav>
 
           <div className="hidden lg:flex items-center space-x-4">
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-amber-300 transition-colors drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/80 hover:text-accent transition-colors drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
               <Instagram className="w-5 h-5" />
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-amber-300 transition-colors drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/80 hover:text-accent transition-colors drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
               <Linkedin className="w-5 h-5" />
             </a>
-            <button className="text-white/80 hover:text-amber-300 transition-colors drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+            <button className="text-primary-foreground/80 hover:text-accent transition-colors drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
               <Globe className="w-5 h-5" />
             </button>
 
-            <div className="flex items-center bg-white/20 backdrop-blur-sm rounded-md p-1">
+            <div className="flex items-center bg-primary-foreground/20 backdrop-blur-sm rounded-md p-1">
               <button
                 onClick={() => setLanguage('en')}
                 className={`px-3 py-1 text-sm rounded transition-colors ${language === 'en'
-                  ? 'bg-amber-700 text-white'
-                  : 'text-neutral-300 hover:text-white'
+                  ? 'bg-accent text-accent-foreground'
+                  : 'text-primary-foreground/70 hover:text-primary-foreground'
                   }`}
               >
                 EN
@@ -72,8 +88,8 @@ export function Header() {
               <button
                 onClick={() => setLanguage('de')}
                 className={`px-3 py-1 text-sm rounded transition-colors ${language === 'de'
-                  ? 'bg-amber-700 text-white'
-                  : 'text-neutral-300 hover:text-white'
+                  ? 'bg-accent text-accent-foreground'
+                  : 'text-primary-foreground/70 hover:text-primary-foreground'
                   }`}
               >
                 DE
@@ -83,7 +99,7 @@ export function Header() {
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden text-neutral-300 hover:text-white"
+            className="lg:hidden text-primary-foreground/80 hover:text-primary-foreground"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -92,37 +108,36 @@ export function Header() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-black/30 backdrop-blur-md border-t border-white/10">
+        <div className="lg:hidden bg-primary/95 backdrop-blur-md border-t border-primary-foreground/10">
           <div className="container mx-auto px-4 py-4 space-y-4">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="block text-neutral-300 hover:text-white transition-colors py-2"
-                onClick={() => setMobileMenuOpen(false)}
+                className="text-sm font-avenir font-medium text-primary-foreground hover:text-accent transition-colors drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
               >
                 {item.label}
               </Link>
             ))}
 
-            <div className="flex items-center space-x-4 pt-4 border-t border-neutral-700">
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-neutral-200 transition-colors">
+            <div className="flex items-center space-x-4 pt-4 border-t border-primary-foreground/20">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-neutral-200 transition-colors">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <button className="text-neutral-400 hover:text-neutral-200 transition-colors">
+              <button className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                 <Globe className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="flex items-center bg-white/20 backdrop-blur-sm rounded-md p-1 w-fit">
+            <div className="flex items-center bg-primary-foreground/20 backdrop-blur-sm rounded-md p-1 w-fit">
               <button
                 onClick={() => setLanguage('en')}
                 className={`px-3 py-1 text-sm rounded transition-colors ${language === 'en'
-                  ? 'bg-amber-700 text-white'
-                  : 'text-neutral-300 hover:text-white'
+                  ? 'bg-accent text-accent-foreground'
+                  : 'text-primary-foreground/70 hover:text-primary-foreground'
                   }`}
               >
                 EN
@@ -130,8 +145,8 @@ export function Header() {
               <button
                 onClick={() => setLanguage('de')}
                 className={`px-3 py-1 text-sm rounded transition-colors ${language === 'de'
-                  ? 'bg-amber-700 text-white'
-                  : 'text-neutral-300 hover:text-white'
+                  ? 'bg-accent text-accent-foreground'
+                  : 'text-primary-foreground/70 hover:text-primary-foreground'
                   }`}
               >
                 DE

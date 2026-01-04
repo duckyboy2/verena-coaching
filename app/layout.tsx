@@ -1,9 +1,25 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
-
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
+
+import localFont from 'next/font/local';
+const gellatio = localFont({
+  src: '../public/fonts/gellatio.ttf',
+  variable: '--font-gellatio',
+  display: 'swap',
+});
+// const gotham = localFont({
+//   src: '../public/fonts/Gotham.ttf',
+//   variable: '--font-gotham',
+//   display: 'swap',
+// });
+// const avenir = localFont({
+//   src: '../public/fonts/Avenir.ttf',
+//   variable: '--font-avenir',
+//   display: 'swap',
+// });
 
 export const metadata: Metadata = {
   title: 'Verena Wassermann - Mind & Body Coaching',
@@ -24,7 +40,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${playfair.variable} ${gellatio.variable} font-sans antialiased`}>
         <LanguageProvider>
           {children}
         </LanguageProvider>

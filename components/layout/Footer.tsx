@@ -9,23 +9,23 @@ export function Footer() {
   const t = content[language];
 
   return (
-    <footer className="bg-neutral-900 text-neutral-300 py-12" id="contact">
+    <footer className="bg-primary text-primary-foreground/80 py-12" id="contact">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
             <div className="mb-4">
-              <div className="text-xs font-light tracking-wide text-neutral-400">Verena Wassermann</div>
-              <div className="text-sm font-semibold tracking-wider text-white">MIND & BODY COACHING</div>
+              <div className="text-xs font-light tracking-wide text-primary-foreground/60">Verena Wassermann</div>
+              <div className="text-sm font-semibold tracking-wider text-primary-foreground">MIND & BODY COACHING</div>
             </div>
-            <p className="text-sm text-neutral-400 leading-relaxed">
+            <p className="text-sm text-primary-foreground/60 leading-relaxed">
               Where Medicine Meets Soul
             </p>
           </div>
 
           <div>
-            <h3 className="text-white font-semibold mb-4">Contact</h3>
+            <h3 className="text-primary-foreground font-semibold mb-4">Contact</h3>
             <div className="space-y-2">
-              <a href="mailto:contact@verena-wassermann.com" className="flex items-center text-sm hover:text-white transition-colors">
+              <a href="mailto:contact@verena-wassermann.com" className="flex items-center text-sm hover:text-primary-foreground transition-colors">
                 <Mail className="w-4 h-4 mr-2" />
                 contact@verena-wassermann.com
               </a>
@@ -33,31 +33,31 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-white font-semibold mb-4">Follow</h3>
+            <h3 className="text-primary-foreground font-semibold mb-4">Follow</h3>
             <div className="flex items-center space-x-4">
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary-foreground transition-colors">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary-foreground transition-colors">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="hover:text-white transition-colors">
+              <a href="#" className="hover:text-primary-foreground transition-colors">
                 <Globe className="w-5 h-5" />
               </a>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-neutral-800 pt-8">
+        <div className="border-t border-primary-foreground/10 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-sm text-neutral-400">
+            <p className="text-sm text-primary-foreground/60">
               {t.footer.copyright}
             </p>
             <div className="flex space-x-6 text-sm">
-              <a href="#privacy" className="hover:text-white transition-colors">
+              <a href="#privacy" className="hover:text-primary-foreground transition-colors">
                 {t.footer.privacy}
               </a>
-              <a href="#terms" className="hover:text-white transition-colors">
+              <a href="#terms" className="hover:text-primary-foreground transition-colors">
                 {t.footer.terms}
               </a>
             </div>

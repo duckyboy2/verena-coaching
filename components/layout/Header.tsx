@@ -22,6 +22,18 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Prevent background scrolling when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
+
   const navItems = [
     { label: t.nav.myWork, href: '/my-work' },
     { label: t.nav.aboutMe, href: '/about' },
@@ -108,13 +120,14 @@ export function Header() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-primary/95 backdrop-blur-md border-t border-primary-foreground/10">
-          <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
+        <div className="lg:hidden bg-primary/80 backdrop-blur-md border-t border-primary-foreground/10 absolute w-full h-screen overflow-y-auto pb-20">
+          <div className="container mx-auto px-4 py-8 flex flex-col space-y-6">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-sm font-avenir font-medium text-primary-foreground hover:text-accent transition-colors drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-xl font-avenir font-medium text-primary-foreground hover:text-accent transition-colors drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
               >
                 {item.label}
               </Link>

@@ -200,8 +200,8 @@ export const content = {
     hero: {
       sloganParts: [
         { text: "Wo Medizin auf ", type: "normal" },
-        { text: "Seele", type: "script" },
-        { text: " trifft", type: "normal" }
+        { text: "Seele", type: "script", newline: true },
+        { text: " trifft", type: "normal", raised: true }
       ],
       subline: "Deine Geschichte zählt – und dein Körper erinnert sich",
       legal: "Ich begleite im Rahmen von Coaching, Mentoring & somatischer Arbeit. Keine Diagnosen, keine Therapie, keine ärztliche Behandlung.",

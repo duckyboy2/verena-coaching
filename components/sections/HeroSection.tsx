@@ -29,9 +29,10 @@ export function HeroSection() {
                 {(part as any).newline && <br />}
                 <span
                   className={`
-                  ${(part as any).newline ? 'block sm:inline-block w-full sm:w-auto transform -translate-y-8 sm:-translate-y-12 ml-12 sm:ml-16' : ''}
-                  ${part.type === 'script' ? 'font-gellatio text-6xl sm:text-7xl lg:text-8xl xl:text-9xl ml-2 inline-block transform translate-y-12 sm:translate-y-20 leading-none h-0 text-[#D4AF37]' : ''}
-                `}
+                    ${(part as any).newline ? 'block sm:inline-block w-full sm:w-auto ml-12 sm:ml-16' : ''}
+                    ${((part as any).newline && part.type !== 'script') || (part as any).raised ? 'transform -translate-y-8 sm:-translate-y-12 inline-block' : ''}
+                    ${part.type === 'script' ? 'font-gellatio text-6xl sm:text-7xl lg:text-8xl xl:text-9xl ml-2 inline-block transform translate-y-12 sm:translate-y-20 leading-none h-0 text-[#D4AF37]' : ''}
+                  `}
                 >
                   {part.text}
                 </span>

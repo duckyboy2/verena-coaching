@@ -109,7 +109,7 @@ export function Header() {
 
       {mobileMenuOpen && (
         <div className="lg:hidden bg-primary/95 backdrop-blur-md border-t border-primary-foreground/10">
-          <div className="container mx-auto px-4 py-4 space-y-4">
+          <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
             {navItems.map((item) => (
               <Link
                 key={item.href}

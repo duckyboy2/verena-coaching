@@ -120,7 +120,7 @@ export function Header() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-primary/80 backdrop-blur-md border-t border-primary-foreground/10 absolute w-full h-screen overflow-y-auto pb-20">
+        <div className="lg:hidden bg-primary/95 backdrop-blur-md border-t border-primary-foreground/10 absolute w-full h-screen overflow-y-auto pb-20">
           <div className="container mx-auto px-4 py-8 flex flex-col space-y-6">
             {navItems.map((item) => (
               <Link
